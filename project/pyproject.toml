@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "project"
+version = "0.1.0"
+description = "Tutoriels Python pour ENI"
+authors = ["Sébastien CHAZALLET"]
+license = "?"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+psycopg2-binary = "^2.9.5"
+SQLAlchemy = "<2.0"
+PyGObject = "^3.42.2"
+requests = "^2.28.2"
+fastapi = "^0.92.0"
+pyramid = "^2.0.1"
+aiomysql = "^0.1.1"
+mysql-connector-python = "8.0.31"
+setuptools = "^67.4.0"
+waitress = "^2.1.2"
+cookiecutter = "^2.1.1"
+plaster-pastedeploy = "^1.0.1"
+pyramid-jinja2 = "^2.10"
+pyramid-debugtoolbar = "^4.10"
+alembic = "^1.9.4"
+pyramid-retry = "^2.1.1"
+pyramid-tm = "^2.5"
+transaction = "^3.0.1"
+pyramid-chameleon = "^0.3"
+zope-interface = "^5.5.2"
+bcrypt = "^4.0.1"
+zope-sqlalchemy = "^2.0"
+
+
+[tool.poetry.plugins."paste.app_factory"]
+main = "project:main"
+
+[tool.poetry.plugins."console_scripts"]
+initialize_project_db = "project.scripts.initialize_db:main"
+show_settings = "project.scripts.settings:main"
+subject = "project.scripts.subject:main"
+contact = "project.scripts.contact:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -5,7 +5,7 @@ from sqlalchemy import engine_from_config
 
 import sys
 if '.' not in sys.path:
-    sys.path.append('.')
+    sys.path.append('')
 
 from project.models.meta import Base
 

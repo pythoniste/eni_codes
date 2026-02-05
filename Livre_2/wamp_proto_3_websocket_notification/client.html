@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script type="text/javascript">
+            var socket = null;
+            var isopen = false;
+
+            function display_message(content) {
+                var tbody = document.getElementById("messages");
+                var tr = document.createElement("tr");
+                tbody.appendChild(tr);
+
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(JSON.stringify(content.payload)));
+                tr.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(content.success));
+                tr.appendChild(td);
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(content.message));
+                tr.appendChild(td);
+            };
+
+            window.onload = function() {
+
+                socket = new WebSocket("ws://127.0.0.1:9000");
+                socket.binaryType = "arraybuffer";
+
+                socket.onopen = function() {
+                    console.log("Connected!");
+                    isopen = true;
+                }
+
+                socket.onmessage = function(e) {
+                    if (typeof e.data == "string") {
+                        try {
+                            var json = JSON.parse( e.data );
+                            console.log("JSON message received: " + json);
+                            if (json.topic == "active_count") {
+                                document.getElementById("active_count").innerText=json.active_count;
+                            } else {
+                                display_message(json);
+                            }
+                        } catch(e) {
+                            console.log("Text message received: " + e.data);
+                        }
+                    } else {
+                        var arr = new Uint8Array(e.data);
+                        var hex = '';
+                        for (var i = 0; i < arr.length; i++) {
+                            hex += ('00' + arr[i].toString(16)).substr(-2);
+                        }
+                        console.log("Binary message received: " + hex);
+                    }
+                }
+
+                socket.onclose = function(e) {
+                    console.log("Connection closed.");
+                    socket = null;
+                    isopen = false;
+                }
+        };
+
+        function sendText() {
+            if (isopen) {
+                socket.send("Hello, world!");
+                console.log("Text message sent.");               
+            } else {
+                console.log("Connection not opened.")
+            }
+        };
+
+        function sendJson() {
+            if (isopen) {
+                socket.send('{"k": "v"}');
+                console.log('{"k": "v"}');
+            } else {
+                console.log("Connection not opened.")
+            }
+        };
+
+        function sendBinary() {
+            if (isopen) {
+                var buf = new ArrayBuffer(32);
+                var arr = new Uint8Array(buf);
+                for (i = 0; i < arr.length; ++i) arr[i] = i;
+                socket.send(buf);
+                console.log("Binary message sent.");
+            } else {
+                console.log("Connection not opened.")
+            }
+        };
+        </script>
+    </head>
+    <body>
+        <h1>Websocket enhanced example</h1>
+        <p>Active sessions: <strong id="active_count">?</strong></p>
+        <p>Open JavaScript console to see debug messages (F12).</p>
+        <button onclick='sendText();'>Send Text Message</button>
+        <button onclick='sendJson();'>Send Json Message</button>
+        <button onclick='sendBinary();'>Send Binary Message</button>
+	    <table>
+            <caption>Test messages</caption>
+	      	<thead>
+		    <tr>
+		        <th>Payload</th>
+		        <th>Success</th>
+		        <th>Message</th>
+		    </tr>
+	      	</thead>
+		    <tbody id="messages"></tbody>
+	    </table>
+    </body>
+</html>

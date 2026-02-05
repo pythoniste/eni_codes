@@ -1,0 +1,32 @@
+en root
+
+vim
+python-unittest2
+python-mock
+python-docutils
+python-jinga2
+
+en postgres
+
+createuser -s openerp
+
+
+
+
+#!/bin/bash
+
+/home/openerp/server/7.0/openerp-server --addons-path=/home/openerp/addons/7.0/,/home/openerp/web/7.0/addons/,/media/sf_partage/code/src
+
+
+#!/bin/bash
+
+/home/openerp/server/7.0/openerp-server --addons-path=/home/openerp/addons/7.0/,/home/openerp/web/7.0/addons/,/media/sf_partage/code/src -u openacademy,oeacademy,roomsrental -d oeacademy
+
+
+#!/bin/bash
+
+dropdb oeacademy
+createdb oeacademy
+
+/home/openerp/server/7.0/openerp-server --addons-path=/home/openerp/addons/7.0/,/home/openerp/web/7.0/addons/,/media/sf_partage/code/src -i oeacademy,openacademy,roomsrental -d oeacademy
+

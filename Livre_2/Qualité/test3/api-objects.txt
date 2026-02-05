@@ -1,0 +1,7 @@
+module_test	module_test-module.html
+module_test.puissance	module_test-module.html#puissance
+module_test.cube	module_test-module.html#cube
+module_test.carre	module_test-module.html#carre
+module_test.__package__	module_test-module.html#__package__
+module_test.Wrapper	module_test.Wrapper-class.html
+module_test.Wrapper.puissance	module_test.Wrapper-class.html#puissance
